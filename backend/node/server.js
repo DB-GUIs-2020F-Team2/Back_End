@@ -10,7 +10,7 @@ var connection = mysql.createConnection({
   port: '3306',
   user: 'manager',
   password: 'Password',
-  database: 'db'
+  database: 'team2'
 });
 
 //set up some configs for express.
@@ -46,35 +46,35 @@ app.get('/', (req, res) => {
 
 
 //POST /reset
-app.post('/reset', (req, res) => {
-  connection.query('drop table if exists test_table', function (err, rows, fields) {
-    if (err)
-      logger.error("Can't drop table");
-  });
-  connection.query('CREATE TABLE `db`.`test_table` (`id` INT NOT NULL AUTO_INCREMENT, `value` VARCHAR(45), PRIMARY KEY (`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);', function (err, rows, fields) {
-    if (err)
-      logger.error("Problem creating the table test_table");
-  });
-  res.status(200).send('created the table');
-});
+// app.post('/reset', (req, res) => {
+//   connection.query('drop table if exists test_table', function (err, rows, fields) {
+//     if (err)
+//       logger.error("Can't drop table");
+//   });
+//   connection.query('CREATE TABLE `db`.`test_table` (`id` INT NOT NULL AUTO_INCREMENT, `value` VARCHAR(45), PRIMARY KEY (`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);', function (err, rows, fields) {
+//     if (err)
+//       logger.error("Problem creating the table test_table");
+//   });
+//   res.status(200).send('created the table');
+// });
 
 //POST /multplynumber
-app.post('/multplynumber', (req, res) => {
-  console.log(req.body.product);
+// app.post('/multplynumber', (req, res) => {
+//   console.log(req.body.product);
 
-  connection.query('INSERT INTO `db`.`test_table` (`value`) VALUES(\'' + req.body.product + '\')', function (err, rows, fields) {
-    if (err){
-      logger.error("Problem inserting into test table");
-    }
-    else {
-      res.status(200).send(`added ${req.body.product} to the table!`);
-    }
-  });
-});
+//   connection.query('INSERT INTO `db`.`test_table` (`value`) VALUES(\'' + req.body.product + '\')', function (err, rows, fields) {
+//     if (err){
+//       logger.error("Problem inserting into test table");
+//     }
+//     else {
+//       res.status(200).send(`added ${req.body.product} to the table!`);
+//     }
+//   });
+// });
 
 //GET /checkdb
-app.get('/values', (req, res) => {
-  connection.query('SELECT value FROM `db`.`test_table`', function (err, rows, fields) {
+app.get('/user', (req, res) => {
+  connection.query('SELECT * FROM team2.user', function (err, rows, fields) {
     if (err) {
       logger.error("Error while executing Query: \n", err);
       res.status(400).json({

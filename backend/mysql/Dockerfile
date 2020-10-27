@@ -15,5 +15,6 @@ ENV MYSQL_RANDOM_ROOT_PASSWORD=1
 
 # Copy in first run SQL scripts
 COPY ./init.sql /docker-entrypoint-initdb.d/
+COPY ./team2_schema.sql /docker-entrypoint-initdb.d/
 
 EXPOSE 3306

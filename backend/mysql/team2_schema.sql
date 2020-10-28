@@ -139,3 +139,35 @@ INSERT INTO Project_Order (ProjectID, OrderID) VALUES
     (1, 1),
     (2, 2),
     (3, 3);
+
+CREATE TABLE `Bidding` (
+  `BiddingID` int NOT NULL AUTO_INCREMENT,
+  `User_UserID_Contractor` int NOT NULL,
+  `BiddingPrice` int DEFAULT NULL,
+  `Contract_ContractID` int NOT NULL,
+  PRIMARY KEY (`BiddingID`)
+);
+
+CREATE TABLE `Contract` (
+  `ContractID` int NOT NULL AUTO_INCREMENT,
+  `ContractDetail` varchar(300) DEFAULT NULL,
+  `BestBiddingID` int DEFAULT NULL,
+  `User_UserID_Contractor` int DEFAULT NULL,
+  `IsPaid` tinyint(1) DEFAULT NULL,
+  `ContractStatus` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ContractID`)
+);
+CREATE TABLE `Contract_Product` (
+  `Contract_ProductID` int NOT NULL,
+  `Contract_ContractID` int NOT NULL,
+  `Contract_ProductCount` int DEFAULT NULL,
+  `Product_ProductID` int NOT NULL,
+  PRIMARY KEY (`Contract_ProductID`)
+);
+CREATE TABLE `Project_Contractor` (
+  `Project_ContractorID` int NOT NULL AUTO_INCREMENT,
+  `Project_ProjectID` int NOT NULL,
+  `Contract_ContractID` int NOT NULL,
+  PRIMARY KEY (`Project_ContractorID`),
+  UNIQUE KEY `Project_ContractorID_UNIQUE` (`Project_ContractorID`)
+) ;

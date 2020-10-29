@@ -121,6 +121,27 @@ INSERT INTO Order_Product (OrderID, ProductID) VALUES
     (3, 4),
     (3, 5);
 
+DROP TABLE IF EXISTS Vendor_Product;
+CREATE TABLE Vendor_Product(
+    Vendor_ProductID INT AUTO_INCREMENT,
+    VendorID INT,
+    ProductID INT,
+    PRIMARY KEY (Vendor_ProductID),
+    FOREIGN KEY (VendorID)
+        REFERENCES User(UserID)
+        ON UPDATE CASCADE,
+    FOREIGN KEY (ProductID)
+        REFERENCES Product(ProductID)
+        ON UPDATE CASCADE
+);
+
+INSERT INTO Vendor_Product (VendorID, ProductID) VALUES
+    (4, 1),
+    (4, 2),
+    (4, 3),
+    (4, 4),
+    (4, 5);
+
 DROP TABLE IF EXISTS Project_Order;
 CREATE TABLE Project_Order(
     Project_OrderID INT AUTO_INCREMENT,
@@ -131,7 +152,7 @@ CREATE TABLE Project_Order(
         REFERENCES Orders(OrderID)
         ON UPDATE CASCADE,
     FOREIGN KEY (ProjectID)
-        REFERENCES Project(projectID)
+        REFERENCES Project(ProjectID)
         ON UPDATE CASCADE
 );
 
@@ -140,34 +161,54 @@ INSERT INTO Project_Order (ProjectID, OrderID) VALUES
     (2, 2),
     (3, 3);
 
-CREATE TABLE `Bidding` (
-  `BiddingID` int NOT NULL AUTO_INCREMENT,
-  `User_UserID_Contractor` int NOT NULL,
-  `BiddingPrice` int DEFAULT NULL,
-  `Contract_ContractID` int NOT NULL,
-  PRIMARY KEY (`BiddingID`)
+CREATE TABLE Contract (
+    ContractID int NOT NULL AUTO_INCREMENT,
+    ContractDetail varchar(300) DEFAULT NULL,
+    BestBiddingID int DEFAULT NULL,
+    ContractorID int DEFAULT NULL,
+    IsPaid tinyint(1) DEFAULT NULL,
+    ContractStatus varchar(100) DEFAULT NULL,
+    PRIMARY KEY (ContractID),
+    FOREIGN KEY (ContractorID)
+        REFERENCES User(UserID)
+        ON UPDATE CASCADE
 );
 
-CREATE TABLE `Contract` (
-  `ContractID` int NOT NULL AUTO_INCREMENT,
-  `ContractDetail` varchar(300) DEFAULT NULL,
-  `BestBiddingID` int DEFAULT NULL,
-  `User_UserID_Contractor` int DEFAULT NULL,
-  `IsPaid` tinyint(1) DEFAULT NULL,
-  `ContractStatus` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`ContractID`)
+CREATE TABLE Bidding (
+    BiddingID int NOT NULL AUTO_INCREMENT,
+    ContractorID int NOT NULL,
+    BiddingPrice int DEFAULT NULL,
+    ContractID int NOT NULL,
+    PRIMARY KEY (BiddingID),
+    FOREIGN KEY (ContractorID)
+        REFERENCES User(UserID)
+        ON UPDATE CASCADE,
+    FOREIGN KEY (ContractID)
+        REFERENCES Contract(ContractID)
+        ON UPDATE CASCADE
 );
-CREATE TABLE `Contract_Product` (
-  `Contract_ProductID` int NOT NULL,
-  `Contract_ContractID` int NOT NULL,
-  `Contract_ProductCount` int DEFAULT NULL,
-  `Product_ProductID` int NOT NULL,
-  PRIMARY KEY (`Contract_ProductID`)
+
+CREATE TABLE Contract_Product (
+    Contract_ProductID int NOT NULL,
+    ContractID int NOT NULL,
+    ProductCount int DEFAULT NULL,
+    ProductID int NOT NULL,
+    PRIMARY KEY (Contract_ProductID),
+    FOREIGN KEY (ContractID)
+        REFERENCES Contract(ContractID)
+        ON UPDATE CASCADE,
+    FOREIGN KEY (ProductID)
+        REFERENCES Product(ProductID)
+        ON UPDATE CASCADE
 );
-CREATE TABLE `Project_Contractor` (
-  `Project_ContractorID` int NOT NULL AUTO_INCREMENT,
-  `Project_ProjectID` int NOT NULL,
-  `Contract_ContractID` int NOT NULL,
-  PRIMARY KEY (`Project_ContractorID`),
-  UNIQUE KEY `Project_ContractorID_UNIQUE` (`Project_ContractorID`)
+
+CREATE TABLE Project_Contractor (
+  Project_ContractorID int NOT NULL AUTO_INCREMENT,
+  ProjectID int NOT NULL,
+  ContractorID int NOT NULL,
+  PRIMARY KEY (Project_ContractorID),
+  UNIQUE KEY ContractorID_UNIQUE (ContractorID),
+  FOREIGN KEY (ProjectID)
+        REFERENCES Project(ProjectID)
+        ON UPDATE CASCADE
 ) ;

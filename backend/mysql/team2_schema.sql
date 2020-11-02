@@ -33,8 +33,8 @@ CREATE TABLE Project(
     ProjectType VARCHAR(100),
     ManagerID INT,
     PRIMARY KEY (ProjectID),
-	FOREIGN KEY(ManagerID)
-		REFERENCES User(UserID)
+    FOREIGN KEY(ManagerID)
+        REFERENCES User(UserID)
         ON UPDATE CASCADE
 );
 
@@ -52,8 +52,8 @@ CREATE TABLE NotificationBox(
     UserID INT,
     NotificationMessage VARCHAR(200),
     PRIMARY KEY (NotificationID),
-	FOREIGN KEY(UserID)
-		REFERENCES User(UserID)
+    FOREIGN KEY(UserID)
+        REFERENCES User(UserID)
         ON UPDATE CASCADE
 );
 
